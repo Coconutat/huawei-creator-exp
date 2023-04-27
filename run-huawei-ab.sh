@@ -353,7 +353,7 @@ mount -o loop,rw s-ab-raw.img d
 	xattr -w security.selinux u:object_r:system_file:s0 etc/init/init.charger.huawei.rc
 	chmod 755 etc/init/init.charger.huawei.rc
 	
-	# sed -i 'import /system/etc/init/init.charger.huawei.rc' etc/init/hw/init.rc
+	sed -i '13iimport /system/etc/init/init.charger.huawei.rc' etc/init/hw/init.rc
 	
 
 
