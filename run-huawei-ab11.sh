@@ -1,7 +1,11 @@
 #!/bin/bash
 
 #Usage:
+<<<<<<< Updated upstream
 #sudo bash run-huawei-ab11.sh  [/path/to/system.img] [version] [model device] [huawei animation]
+=======
+#sudo bash run-huawei-abonly.sh  [/path/to/system.img] [version] [model device] [huawei animation]
+>>>>>>> Stashed changes
 #cleanups
 umount d
 
@@ -36,7 +40,10 @@ e2fsck -E unshare_blocks -y -f s.img
 mount -o loop,rw s.img d
 (
 	#----------------------------- Missing Huawei root folder -----------------------------------------------------		
+<<<<<<< Updated upstream
 	chmod -R 777 d	
+=======
+>>>>>>> Stashed changes
 	cd d
 	
 	rm -rf splash2
@@ -250,6 +257,7 @@ mount -o loop,rw s.img d
 		cp "$origin/files-patch/system/etc/NFC/libnfc_nxp_RF_anne_L31.conf" etc/libnfc-nxp_RF.conf
 		xattr -w security.selinux u:object_r:system_file:s0 etc/libnfc-nxp_RF.conf
 	fi
+<<<<<<< Updated upstream
 
     # VTR-L09 / VTR-AL00 Huawei P10
 	if [ "$model" == "VTR-L09" ];then
@@ -317,6 +325,8 @@ mount -o loop,rw s.img d
 		echo "ro.product.system_ext.brand=HUAWEI" >>  system_ext/etc/build.prop
 
 	fi
+=======
+>>>>>>> Stashed changes
 	
 	# Remove duplicate media audio
 	rm -rf product/media/audio/ringtones/ANDROMEDA.ogg
@@ -963,5 +973,10 @@ e2fsck -f -y s.img || true
 resize2fs -M s.img
 
 mv s.img s-vndklite.img
+<<<<<<< Updated upstream
 chmod -R 777 s-vndklite.img
+=======
+
+
+>>>>>>> Stashed changes
 
