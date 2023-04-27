@@ -963,5 +963,5 @@ e2fsck -f -y s.img || true
 resize2fs -M s.img
 
 mv s.img s-vndklite.img
-
+chmod -R 777 s-vndklite.img
 
