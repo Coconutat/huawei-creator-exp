@@ -18,6 +18,7 @@ srcFile="$1"
 versionNumber="$2"
 model="$3"
 bootanim="$4"
+androidver="$5"
 
 if [ ! -f "$srcFile" ];then
 	echo "Usage: sudo bash run-huawei-aonly.sh [/path/to/system.img] [version] [model] [bootanim : Y/N]"
@@ -36,10 +37,12 @@ e2fsck -E unshare_blocks -y -f s-aonly.img
 mount -o loop,rw s-aonly.img d
 (
 
-    sleep 120
+
 	#----------------------------- Missing Huawei root folder -----------------------------------------------------		
 	cd d
-	
+
+    sleep 120
+
 	mkdir splash2
 	chown root:root splash2
 	chmod 777 splash2
@@ -52,11 +55,11 @@ mount -o loop,rw s-aonly.img d
 		
 	#----------------------------- Make a-only image ------------------------------------------------------	
 	
-	# cp init.environ.rc "$origin"/tmp
+	# cp etc/init/init-environ.rc "$origin"/tmp
 
-	find -maxdepth 1 -not -name system -not -name . -not -name .. -exec rm -Rf '{}' +
-	mv system/* .
-	rmdir system
+	# find -maxdepth 1 -not -name system -not -name . -not -name .. -exec rm -Rf '{}' +
+	# mv system/* .
+	# rmdir system
 
 
 	# remove apex v28, v29
@@ -144,7 +147,7 @@ mount -o loop,rw s-aonly.img d
 
 	cp -R system_ext/apex/com.android.vndk.v27 system_ext/apex/com.android.vndk.v26
 	for i in vndkcore llndk vndkprivate vndksp;do
-	    mv system_ext/apex/com.android.vndk.v26/etc/${i}.libraries.27.txt system_ext/apex/com.android.vndk.v26/etc/${i}.libraries.26.txt
+	    mv system_ext/apex/com.android.vndk.v26/com.android.vndk.v27/etc/${i}.libraries.27.txt system_ext/apex/com.android.vndk.v26/etc/${i}.libraries.26.txt
 	done
 	find system_ext/apex/com.android.vndk.v26 -exec xattr -w security.selinux u:object_r:system_file:s0 '{}' \;
 
@@ -208,17 +211,18 @@ mount -o loop,rw s-aonly.img d
 	sed -i -e s/readproc//g -e s/reserved_disk//g etc/init/hw/init.zygote64.rc etc/init/hw/init.zygote64_32.rc etc/init/hw/init.zygote32_64.rc etc/init/hw/init.zygote32.rc
 	xattr -w security.selinux u:object_r:system_file:s0 etc/init/hw/init.zygote64.rc etc/init/hw/init.zygote64_32.rc etc/init/hw/init.zygote32_64.rc etc/init/hw/init.zygote32.rc
 
-	ln -s /apex/com.android.vndk.v26/lib/ lib/vndk-sp-26
-	xattr -sw security.selinux u:object_r:system_lib_file:s0 lib/vndk-sp-26
-	ln -s /apex/com.android.vndk.v26/lib/ lib/vndk-26
-	xattr -sw security.selinux u:object_r:system_lib_file:s0 lib/vndk-26
+	# ln -s /apex/com.android.vndk.v26/lib/ lib/vndk-sp-26
+	# xattr -sw security.selinux u:object_r:system_lib_file:s0 lib/vndk-sp-26
+	# ln -s /apex/com.android.vndk.v26/lib/ lib/vndk-26
+	# xattr -sw security.selinux u:object_r:system_lib_file:s0 lib/vndk-26
 
-	if [ -d lib64 ];then
-		ln -s /apex/com.android.vndk.v26/lib64/ lib64/vndk-sp-26
-		xattr -sw security.selinux u:object_r:system_lib_file:s0 lib64/vndk-sp-26
-		ln -s /apex/com.android.vndk.v26/lib64/ lib64/vndk-26
-		xattr -sw security.selinux u:object_r:system_lib_file:s0 lib64/vndk-26
-	fi
+    
+	# if [ -d lib64 ];then
+	#	ln -s /apex/com.android.vndk.v26/lib64/ lib64/vndk-sp-26
+	#	xattr -sw security.selinux u:object_r:system_lib_file:s0 lib64/vndk-sp-26
+	#	ln -s /apex/com.android.vndk.v26/lib64/ lib64/vndk-26
+	#	xattr -sw security.selinux u:object_r:system_lib_file:s0 lib64/vndk-26
+	# fi
 
 
 	#-----------------------------File copy -----------------------------------------------------	
@@ -333,13 +337,13 @@ mount -o loop,rw s-aonly.img d
 		echo "ro.product.device=HWVTR" >> build.prop	
 		echo "ro.product.system.device=HWVTR" >>  build.prop
 		echo "ro.product.system.brand=HUAWEI" >>  build.prop
-		echo "ro.build.fingerprint=HUAWEI/VTR-AL00/HWVTR:11/HUAWEIVTR-AL00/372(C00):user/release-keys" >> build.prop	
-		echo "ro.system.build.fingerprint=HUAWEI/VTR-AL00/HWVTR:11/HUAWEIVTR-AL00/372(C00):user/release-keys" >> build.prop	
+		echo "ro.build.fingerprint=HUAWEI/VTR-AL00/HWVTR:"${androidver}"/HUAWEIVTR-AL00/372(C00):user/release-keys" >> build.prop	
+		echo "ro.system.build.fingerprint=HUAWEI/VTR-AL00/HWVTR:"${androidver}"/HUAWEIVTR-AL00/372(C00):user/release-keys" >> build.prop	
 		echo "ro.product.product.device=HWVTR" >>  product/etc/build.prop
 		echo "ro.product.product.brand=HUAWEI" >>  product/etc/build.prop	
 		echo "ro.product.system_ext.device=HWVTR" >>  system_ext/build.prop
 		echo "ro.product.system_ext.brand=HUAWEI" >>  system_ext/build.prop
-		echo "ro.system_ext.build.fingerprint=HUAWEI/VTR-AL00/HWVTR:11/HUAWEIVTR-AL00/372(C00):user/release-keys" >> system_ext/build.prop
+		echo "ro.system_ext.build.fingerprint=HUAWEI/VTR-AL00/HWVTR:"${androidver}"/HUAWEIVTR-AL00/372(C00):user/release-keys" >> system_ext/build.prop
 
 	fi
 
@@ -507,14 +511,14 @@ mount -o loop,rw s-aonly.img d
 	echo "(allow credstore self (capability (sys_resource)))" >> etc/selinux/plat_sepolicy.cil
 		
 	# PHH SU Daemon
-	echo "(allow phhsu_daemon kernel (system (syslog_console)))" >> etc/selinux/plat_sepolicy.cil
-	echo "(allow phhsu_daemon dmd_device (chr_file (open write read getattr setattr)))" >> etc/selinux/plat_sepolicy.cil
-	echo "(allow phhsu_daemon self (capability (fsetid)))" >> etc/selinux/plat_sepolicy.cil
-	echo "(allow phhsu_daemon splash2_data_file (filesystem (getattr)))" >> etc/selinux/plat_sepolicy.cil
-	echo "(allow phhsu_daemon teecd_data_file (filesystem (getattr)))" >> etc/selinux/plat_sepolicy.cil
-	echo "(allow phhsu_daemon modem_fw_file (filesystem (getattr)))" >> etc/selinux/plat_sepolicy.cil
-	echo "(allow phhsu_daemon modem_nv_file (filesystem (getattr)))" >> etc/selinux/plat_sepolicy.cil
-	echo "(allow phhsu_daemon modem_log_file (filesystem (getattr)))" >> etc/selinux/plat_sepolicy.cil
+	# echo "(allow phhsu_daemon kernel (system (syslog_console)))" >> etc/selinux/plat_sepolicy.cil
+	# echo "(allow phhsu_daemon dmd_device (chr_file (open write read getattr setattr)))" >> etc/selinux/plat_sepolicy.cil
+	# echo "(allow phhsu_daemon self (capability (fsetid)))" >> etc/selinux/plat_sepolicy.cil
+	# echo "(allow phhsu_daemon splash2_data_file (filesystem (getattr)))" >> etc/selinux/plat_sepolicy.cil
+	# echo "(allow phhsu_daemon teecd_data_file (filesystem (getattr)))" >> etc/selinux/plat_sepolicy.cil
+	# echo "(allow phhsu_daemon modem_fw_file (filesystem (getattr)))" >> etc/selinux/plat_sepolicy.cil
+	# echo "(allow phhsu_daemon modem_nv_file (filesystem (getattr)))" >> etc/selinux/plat_sepolicy.cil
+	# echo "(allow phhsu_daemon modem_log_file (filesystem (getattr)))" >> etc/selinux/plat_sepolicy.cil
 	
 	# Add to enable file encryption (vold) - Fix permission on folder /data/unencrypted and /data/*/0
 	echo "(allow vold block_device (blk_file (open read write)))" >> etc/selinux/plat_sepolicy.cil
@@ -650,6 +654,12 @@ mount -o loop,rw s-aonly.img d
 		sed -i 's/^persist.esdfs_sdcard=false' etc/prop.default
 	fi
 	
+    # securize
+    touch phh/secure
+	rm bin/phh-su
+	rm etc/init/su.rc
+	rm bin/phh-securize.sh
+	rm -Rf {app,priv-app}/me.phh.superuser/
 	
 )
 sleep 1

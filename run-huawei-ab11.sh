@@ -1,11 +1,7 @@
 #!/bin/bash
 
 #Usage:
-<<<<<<< Updated upstream
-#sudo bash run-huawei-ab11.sh  [/path/to/system.img] [version] [model device] [huawei animation]
-=======
 #sudo bash run-huawei-abonly.sh  [/path/to/system.img] [version] [model device] [huawei animation]
->>>>>>> Stashed changes
 #cleanups
 umount d
 
@@ -40,10 +36,6 @@ e2fsck -E unshare_blocks -y -f s.img
 mount -o loop,rw s.img d
 (
 	#----------------------------- Missing Huawei root folder -----------------------------------------------------		
-<<<<<<< Updated upstream
-	chmod -R 777 d	
-=======
->>>>>>> Stashed changes
 	cd d
 	
 	rm -rf splash2
@@ -257,29 +249,10 @@ mount -o loop,rw s.img d
 		cp "$origin/files-patch/system/etc/NFC/libnfc_nxp_RF_anne_L31.conf" etc/libnfc-nxp_RF.conf
 		xattr -w security.selinux u:object_r:system_file:s0 etc/libnfc-nxp_RF.conf
 	fi
-<<<<<<< Updated upstream
 
-    # VTR-L09 / VTR-AL00 Huawei P10
+	# VTR-L09 / VTR-AL00 Huawei P10
 	if [ "$model" == "VTR-L09" ];then
-		# NFC
-		cp "$origin/files-patch/system/etc/NFC/libnfc_brcm_victoria.conf" etc/libnfc-brcm.conf
-		xattr -w security.selinux u:object_r:system_file:s0  etc/libnfc-brcm.conf
-		cp "$origin/files-patch/system/etc/NFC/libnfc_nci_victoria.conf" etc/libnfc-nci.conf
-		xattr -w security.selinux u:object_r:system_file:s0 etc/libnfc-nci.conf
-		cp "$origin/files-patch/system/etc/NFC/libnfc_nxp_victoria.conf" etc/libnfc-nxp.conf
-		xattr -w security.selinux u:object_r:system_file:s0 etc/libnfc-nxp.conf
-		cp "$origin/files-patch/system/etc/NFC/libnfc_nxp_RF_victoria.conf" etc/libnfc-nxp_RF.conf
-		xattr -w security.selinux u:object_r:system_file:s0 etc/libnfc-nxp_RF.conf
-		
-		cp "$origin/files-patch/system/etc/NFC/libnfc_brcm_victoria.conf" product/etc/libnfc-brcm.conf
-		xattr -w security.selinux u:object_r:system_file:s0  product/etc/libnfc-brcm.conf
-		cp "$origin/files-patch/system/etc/NFC/libnfc_nci_victoria.conf" product/etc/libnfc-nci.conf
-		xattr -w security.selinux u:object_r:system_file:s0 product/etc/libnfc-nci.conf
-		cp "$origin/files-patch/system/etc/NFC/libnfc_nxp_victoria.conf" product/etc/libnfc-nxp.conf
-		xattr -w security.selinux u:object_r:system_file:s0 product/etc/libnfc-nxp.conf
-		cp "$origin/files-patch/system/etc/NFC/libnfc_nxp_RF_victoria.conf" product/etc/libnfc-nxp_RF.conf
-		xattr -w security.selinux u:object_r:system_file:s0 product/etc/libnfc-nxp_RF.conf
-
+		# build.prop
 		echo "ro.product.brand=HUAWEI" >> build.prop
 		echo "ro.build.product=VTR-L09" >> build.prop
 		echo "ro.product.device=HWVTR" >> build.prop	
@@ -289,44 +262,28 @@ mount -o loop,rw s.img d
 		echo "ro.product.system.brand=HUAWEI" >>  build.prop	
 		echo "ro.product.product.device=HWVTR" >>  product/etc/build.prop
 		echo "ro.product.product.brand=HUAWEI" >>  product/etc/build.prop	
-		echo "ro.product.system_ext.device=HWVTR" >>  system_ext/etc/build.prop
-		echo "ro.product.system_ext.brand=HUAWEI" >>  system_ext/etc/build.prop
+		echo "ro.product.system_ext.device=HWVTR" >>  system_ext/build.prop
+		echo "ro.product.system_ext.brand=HUAWEI" >>  system_ext/build.prop
 
 	elif [ "$model" == "VTR-AL00" ];then
-	# NFC
-		cp "$origin/files-patch/system/etc/NFC/libnfc_brcm_victoria.conf" etc/libnfc-brcm.conf
-		xattr -w security.selinux u:object_r:system_file:s0  etc/libnfc-brcm.conf
-		cp "$origin/files-patch/system/etc/NFC/libnfc_nci_victoria.conf" etc/libnfc-nci.conf
-		xattr -w security.selinux u:object_r:system_file:s0 etc/libnfc-nci.conf
-		cp "$origin/files-patch/system/etc/NFC/libnfc_nxp_victoria.conf" etc/libnfc-nxp.conf
-		xattr -w security.selinux u:object_r:system_file:s0 etc/libnfc-nxp.conf
-		cp "$origin/files-patch/system/etc/NFC/libnfc_nxp_RF_victoria.conf" etc/libnfc-nxp_RF.conf
-		xattr -w security.selinux u:object_r:system_file:s0 etc/libnfc-nxp_RF.conf
-		
-		cp "$origin/files-patch/system/etc/NFC/libnfc_brcm_victoria.conf" product/etc/libnfc-brcm.conf
-		xattr -w security.selinux u:object_r:system_file:s0  product/etc/libnfc-brcm.conf
-		cp "$origin/files-patch/system/etc/NFC/libnfc_nci_victoria.conf" product/etc/libnfc-nci.conf
-		xattr -w security.selinux u:object_r:system_file:s0 product/etc/libnfc-nci.conf
-		cp "$origin/files-patch/system/etc/NFC/libnfc_nxp_victoria.conf" product/etc/libnfc-nxp.conf
-		xattr -w security.selinux u:object_r:system_file:s0 product/etc/libnfc-nxp.conf
-		cp "$origin/files-patch/system/etc/NFC/libnfc_nxp_RF_victoria.conf" product/etc/libnfc-nxp_RF.conf
-		xattr -w security.selinux u:object_r:system_file:s0 product/etc/libnfc-nxp_RF.conf
-
+		# build.prop
+		echo "ro.hardware.consumerir=hisi.hi3660" >> build.prop
 		echo "ro.product.brand=HUAWEI" >> build.prop
 		echo "ro.build.product=VTR-AL00" >> build.prop
 		echo "ro.product.device=HWVTR" >> build.prop	
 		echo "ro.product.model=VTR-AL00" >> build.prop	
 		echo "ro.product.device=HWVTR" >> build.prop	
 		echo "ro.product.system.device=HWVTR" >>  build.prop
-		echo "ro.product.system.brand=HUAWEI" >>  build.prop	
+		echo "ro.product.system.brand=HUAWEI" >>  build.prop
+		echo "ro.build.fingerprint=HUAWEI/VTR-AL00/HWVTR:13/HUAWEIVTR-AL00/120C00R1:user/release-keys" >> build.prop	
+		echo "ro.system.build.fingerprint=HUAWEI/VTR-AL00/HWVTR:13/HUAWEIVTR-AL00/120C00R1:user/release-keys" >> build.prop	
 		echo "ro.product.product.device=HWVTR" >>  product/etc/build.prop
 		echo "ro.product.product.brand=HUAWEI" >>  product/etc/build.prop	
-		echo "ro.product.system_ext.device=HWVTR" >>  system_ext/etc/build.prop
-		echo "ro.product.system_ext.brand=HUAWEI" >>  system_ext/etc/build.prop
+		echo "ro.product.system_ext.device=HWVTR" >>  system_ext/build.prop
+		echo "ro.product.system_ext.brand=HUAWEI" >>  system_ext/build.prop
+		echo "ro.system_ext.build.fingerprint=HUAWEI/VTR-AL00/HWVTR:13/HUAWEIVTR-AL00/120C00R1:user/release-keys" >> system_ext/build.prop
 
 	fi
-=======
->>>>>>> Stashed changes
 	
 	# Remove duplicate media audio
 	rm -rf product/media/audio/ringtones/ANDROMEDA.ogg
@@ -488,7 +445,7 @@ mount -o loop,rw s.img d
 	
 	# From iceows supl20 apk (# Hisi)
 	echo "is_hisi_connectivity_chip=1" >> build.prop
-	echo "ro.hardware.consumerir=hisi.hi6250" >> build.prop		
+	# echo "ro.hardware.consumerir=hisi.hi6250" >> build.prop		
 	echo "ro.hardware.hisupl=hi1102"  >> build.prop;
 	
 	# Fix system ntp_server (europe pool)
@@ -973,10 +930,6 @@ e2fsck -f -y s.img || true
 resize2fs -M s.img
 
 mv s.img s-vndklite.img
-<<<<<<< Updated upstream
 chmod -R 777 s-vndklite.img
-=======
 
-
->>>>>>> Stashed changes
 
